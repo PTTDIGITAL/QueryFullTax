@@ -54,18 +54,6 @@ Public Class ConnectDatabase
         End Set
     End Property
 
-    'Public Function getConnectionString() As String
-    '    Dim Server As String = "."
-    '    'Dim Server As String = "10.195.2.205"
-
-    '    Dim Database As String = "POSDB"
-    '    Dim Username As String = "sa"
-
-    '    Dim Password As String = "1qaz@WSX"
-    '    'Dim Password As String = "pTT!CT01"
-
-    '    Return ""
-    'End Function
 
     Function FillData(sql As String) As ProcessReturnInfo
         Dim ret As New ProcessReturnInfo

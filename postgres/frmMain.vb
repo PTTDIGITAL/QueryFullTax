@@ -37,6 +37,7 @@
                 dtdata = ret.DT
                 If Not dtdata Is Nothing AndAlso dtdata.Rows.Count > 0 Then
                     'Write To CSV
+                    clsGlobalFunction.ExportToExcel()
                 End If
             End If
         Next
