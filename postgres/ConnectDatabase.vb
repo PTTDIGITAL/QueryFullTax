@@ -1,6 +1,5 @@
 ﻿Imports System.Data.SqlClient
 
-
 Public Class ConnectDatabase
 
     Dim _Server As String = ""

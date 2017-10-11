@@ -102,7 +102,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.txtQuery)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "postgres"
+        Me.Text = "pg-connects"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

@@ -1,4 +1,5 @@
-﻿Public Class frmMain
+﻿Imports System.IO
+Public Class frmMain
 
     Dim clsGlobalFunction As New GlobalFunction
     Dim clsConnectDatabase As New ConnectDatabase
@@ -13,34 +14,57 @@
     End Sub
 
     Private Sub btnExcute_Click(sender As Object, e As EventArgs) Handles btnExcute.Click
-        Dim dtip As DataTable
-        dtip = clsGlobalFunction.GetIP()
-        For i As Integer = 0 To dtip.Rows.Count - 1
-            Dim ip As String = dtip.Rows(i)("ip").ToString
-            With clsConnectDatabase
-                .Server = ip
-                .Database = dtip.Rows(i)("db").ToString
-                .Username = dtip.Rows(i)("username").ToString
-                .Password = dtip.Rows(i)("password").ToString
-                .Port = dtip.Rows(i)("port").ToString
-            End With
-
-            Dim sql As String = txtQuery.Text.Trim
-
-            Dim ret As New ProcessReturnInfo
-            ret = clsConnectDatabase.FillData(sql)
-            If ret.IsSuccess = False Then
-                txtResult.Text &= txtResult.Text & GetDateTime() & " IP Address" & ip & " Fail" & ret.ErrorMessage & vbCrLf
+        Try
+            Dim path As String = Application.StartupPath & "\Export"
+            If Directory.Exists(path) Then
+                For Each _file As String In Directory.GetFiles(path)
+                    File.Delete(_file)
+                Next
             Else
-                txtResult.Text &= txtResult.Text & GetDateTime() & " IP Address " & ip & " Success" & vbCrLf
-                Dim dtdata As New DataTable
-                dtdata = ret.DT
-                If Not dtdata Is Nothing AndAlso dtdata.Rows.Count > 0 Then
-                    'Write To CSV
-                    clsGlobalFunction.ExportToExcel()
-                End If
+                Directory.CreateDirectory(path)
             End If
-        Next
+
+            Dim dtip As DataTable
+            dtip = clsGlobalFunction.GetIP()
+
+            For i As Integer = 0 To dtip.Rows.Count - 1
+                Dim ip As String = dtip.Rows(i)("ip").ToString
+                With clsConnectDatabase
+                    .Server = ip
+                    .Database = dtip.Rows(i)("db").ToString
+                    .Username = dtip.Rows(i)("username").ToString
+                    .Password = dtip.Rows(i)("password").ToString
+                    .Port = dtip.Rows(i)("port").ToString
+                End With
+
+                Dim sql As String = txtQuery.Text.Trim
+
+                Application.DoEvents()
+                Dim ret As New ProcessReturnInfo
+                ret = clsConnectDatabase.FillData(sql)
+                If ret.IsSuccess = False Then
+                    txtResult.Text &= GetDateTime() & " IP Address" & ip & " Fail " & ret.ErrorMessage & vbCrLf
+                Else
+                    txtResult.Text &= GetDateTime() & " IP Address " & ip & " Success" & vbCrLf
+                    Dim dtdata As New DataTable
+                    dtdata = ret.DT
+                    If Not dtdata Is Nothing AndAlso dtdata.Rows.Count > 0 Then
+                        'Write To CSV
+                        clsGlobalFunction.ExportToCSV(ip, dtdata)
+                    Else
+                        txtResult.Text &= GetDateTime() & " IP Address " & ip & " Fail ไม่พบข้อมูลสำหรับ Export" & vbCrLf
+                    End If
+                End If
+            Next
+
+            Application.DoEvents()
+            txtResult.Text &= GetDateTime() & " สิ้นสุดการ Export" & vbCrLf
+
+        Catch ex As Exception
+            Using New Centered_MessageBox(Me)
+                MessageBox.Show("พบปัญหา  " & ex.ToString(), "", MessageBoxButtons.OK)
+            End Using
+        End Try
     End Sub
 
     Function GetDateTime()
