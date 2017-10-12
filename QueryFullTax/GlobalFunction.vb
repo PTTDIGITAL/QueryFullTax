@@ -59,6 +59,7 @@ Public Class GlobalFunction
 
             Dim path As String = Application.StartupPath & "\Export"
             Dim output As String = path & "\" & ip & ".csv"
+            'Dim csv As New StreamWriter(output)
             Dim csv As New StreamWriter(New FileStream(output, FileMode.CreateNew), Encoding.UTF8) 'StreamWriter(output, Encoding.UTF8)
             csv.Write(Data.ToString)
             csv.Close()

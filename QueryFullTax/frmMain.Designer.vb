@@ -38,7 +38,7 @@ Partial Class frmMain
         Me.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtQuery.Size = New System.Drawing.Size(913, 246)
         Me.txtQuery.TabIndex = 0
-        Me.txtQuery.Text = " select * from customer"
+        Me.txtQuery.Text = " select * from customer limit 10"
         '
         'txtResult
         '

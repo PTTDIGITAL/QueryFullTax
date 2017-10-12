@@ -56,13 +56,16 @@ Public Class ConnectDatabase
 
     Function FillData(sql As String) As ProcessReturnInfo
         Dim ret As New ProcessReturnInfo
-
         Try
-            'Dim ConnStr As String = "Data Source=" & Server & ";Initial Catalog=" & Database & ";Port=" & Port & ";User ID=" & Username & ";Password=" & Password & ";Connect Timeout=1;"
-            Dim ConnStr As String = "Data Source=" & Server & ";Initial Catalog=" & Database & ";User ID=" & Username & ";Password=" & Password & ";Connect Timeout=1;"
-            Dim da As New SqlDataAdapter(sql, ConnStr)
+            Dim connstring As String = [String].Format("Server={0};Port={1};" + "User Id={2};Password={3};Database={4};CommandTimeout={5};", Server, Port, Username, Password, Database, 500)
+            Dim myConnectionBase As New Npgsql.NpgsqlConnection(connstring)
+            myConnectionBase.Open()
+
+            Dim myCommand As New Npgsql.NpgsqlCommand(sql, myConnectionBase)
+            Dim ad As New Npgsql.NpgsqlDataAdapter(myCommand)
             Dim dt As New DataTable
-            da.Fill(dt)
+            ad.Fill(dt)
+
             With ret
                 .DT = dt
                 .IsSuccess = True
