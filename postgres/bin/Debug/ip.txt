@@ -1,3 +1,0 @@
-ip|username|password|port|db
-10.195.2.184|sa|pTT!CT01|5432|POSDB
-10.195.2.209|sa|pTT!CT01|5432|POSDB

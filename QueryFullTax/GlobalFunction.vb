@@ -54,7 +54,7 @@ Public Class GlobalFunction
             data.Append(" " & column_name)
 
             For i As Integer = 0 To dt.Rows.Count - 1
-                data.AppendLine(ConvertTextFormat(dt.Rows(i)))
+                data.AppendLine(" " & ConvertTextFormat(dt.Rows(i)))
             Next
 
             Dim path As String = Application.StartupPath & "\Export"

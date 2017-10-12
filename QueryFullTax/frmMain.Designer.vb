@@ -38,7 +38,7 @@ Partial Class frmMain
         Me.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtQuery.Size = New System.Drawing.Size(913, 246)
         Me.txtQuery.TabIndex = 0
-        Me.txtQuery.Text = "select * from APP_CONFIG"
+        Me.txtQuery.Text = " select * from customer"
         '
         'txtResult
         '
@@ -102,7 +102,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.txtQuery)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "pg-connects"
+        Me.Text = "Query FullTax"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
