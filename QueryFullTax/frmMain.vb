@@ -6,11 +6,13 @@ Public Class frmMain
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtQuery.Focus()
+        ProgressBar1.Value = 0
     End Sub
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         txtQuery.Text = String.Empty
         txtResult.Text = String.Empty
+        ProgressBar1.Value = 0
     End Sub
 
     Private Sub btnExcute_Click(sender As Object, e As EventArgs) Handles btnExcute.Click
@@ -55,11 +57,12 @@ Public Class frmMain
                         txtResult.Text &= GetDateTime() & " IP Address " & ip & " ไม่พบข้อมูล" & vbCrLf
                     End If
                 End If
+                If ProgressBar1.Value >= 97 Then ProgressBar1.Value = 97 Else ProgressBar1.Value = ProgressBar1.Value + 1
             Next
 
             Application.DoEvents()
             txtResult.Text &= GetDateTime() & " สิ้นสุดการเชื่อมต่อ" & vbCrLf
-
+            ProgressBar1.Value = 100
         Catch ex As Exception
             Using New Centered_MessageBox(Me)
                 MessageBox.Show("พบปัญหา  " & ex.ToString(), "", MessageBoxButtons.OK)
