@@ -92,7 +92,6 @@ Public Class frmMain
     End Sub
 
     Private Sub bgWorker_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgWorker.RunWorkerCompleted
-        Application.DoEvents()
         retmsg.Append(GetDateTime() & " สิ้นสุดการเชื่อมต่อ" & vbCrLf)
         txtResult.Text = retmsg.ToString
         ProgressBar1.Value = 100
