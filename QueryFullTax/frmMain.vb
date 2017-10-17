@@ -67,12 +67,12 @@ Public Class frmMain
                 If ret.IsSuccess = False Then
                     retmsg.Append(GetDateTime() & " IP Address" & ip & " พบปัญหาในการเชื่อมต่อ " & ret.ErrorMessage & vbCrLf)
                 Else
-                    retmsg.Append(GetDateTime() & " IP Address " & ip & " สำเร็จ" & vbCrLf)
                     Dim dtdata As New DataTable
                     dtdata = ret.DT
                     If Not dtdata Is Nothing AndAlso dtdata.Rows.Count > 0 Then
                         'Write To CSV
                         clsGlobalFunction.ExportToCSV(ip, dtdata)
+                        retmsg.Append(GetDateTime() & " IP Address " & ip & " สำเร็จ" & vbCrLf)
                     Else
                         retmsg.Append(GetDateTime() & " IP Address " & ip & " ไม่พบข้อมูล" & vbCrLf)
                     End If
