@@ -1,4 +1,7 @@
-﻿Imports System.IO
+﻿
+Imports System.IO
+Imports System.Text
+
 Public Class frmMain
 
     Dim clsGlobalFunction As New GlobalFunction
@@ -13,10 +16,28 @@ Public Class frmMain
         txtQuery.Text = String.Empty
         txtResult.Text = String.Empty
         ProgressBar1.Value = 0
+
+        If bgWorker.WorkerSupportsCancellation = True Then
+            bgWorker.CancelAsync()
+        End If
     End Sub
 
+    Dim retmsg As New StringBuilder
     Private Sub btnExcute_Click(sender As Object, e As EventArgs) Handles btnExcute.Click
+        ProgressBar1.Value = 0
+        txtResult.Text = ""
+        btnExcute.Enabled = False
+        btnClear.Enabled = False
+        bgWorker.WorkerReportsProgress = True
+
+        If Not bgWorker.IsBusy = True Then
+            bgWorker.RunWorkerAsync()
+        End If
+    End Sub
+
+    Private Sub bgWorker_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bgWorker.DoWork
         Try
+            retmsg = New StringBuilder
             Dim path As String = Application.StartupPath & "\Export"
             If Directory.Exists(path) Then
                 For Each _file As String In Directory.GetFiles(path)
@@ -41,33 +62,42 @@ Public Class frmMain
 
                 Dim sql As String = txtQuery.Text.Trim
 
-                Application.DoEvents()
                 Dim ret As New ProcessReturnInfo
                 ret = clsConnectDatabase.FillData(sql)
                 If ret.IsSuccess = False Then
-                    txtResult.Text &= GetDateTime() & " IP Address" & ip & " พบปัญหาในการเชื่อมต่อ " & ret.ErrorMessage & vbCrLf
+                    retmsg.Append(GetDateTime() & " IP Address" & ip & " พบปัญหาในการเชื่อมต่อ " & ret.ErrorMessage & vbCrLf)
                 Else
-                    txtResult.Text &= GetDateTime() & " IP Address " & ip & " สำเร็จ" & vbCrLf
+                    retmsg.Append(GetDateTime() & " IP Address " & ip & " สำเร็จ" & vbCrLf)
                     Dim dtdata As New DataTable
                     dtdata = ret.DT
                     If Not dtdata Is Nothing AndAlso dtdata.Rows.Count > 0 Then
                         'Write To CSV
                         clsGlobalFunction.ExportToCSV(ip, dtdata)
                     Else
-                        txtResult.Text &= GetDateTime() & " IP Address " & ip & " ไม่พบข้อมูล" & vbCrLf
+                        retmsg.Append(GetDateTime() & " IP Address " & ip & " ไม่พบข้อมูล" & vbCrLf)
                     End If
                 End If
-                If ProgressBar1.Value >= 97 Then ProgressBar1.Value = 97 Else ProgressBar1.Value = ProgressBar1.Value + 1
-            Next
 
-            Application.DoEvents()
-            txtResult.Text &= GetDateTime() & " สิ้นสุดการเชื่อมต่อ" & vbCrLf
-            ProgressBar1.Value = 100
+                Application.DoEvents()
+                bgWorker.ReportProgress(i)
+            Next
         Catch ex As Exception
-            Using New Centered_MessageBox(Me)
-                MessageBox.Show("พบปัญหา  " & ex.ToString(), "", MessageBoxButtons.OK)
-            End Using
+            retmsg.Append("พบปัญหา  " & ex.ToString())
         End Try
+    End Sub
+
+    Private Sub bgWorker_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bgWorker.ProgressChanged
+        If ProgressBar1.Value >= 97 Then ProgressBar1.Value = 97 Else ProgressBar1.Value = ProgressBar1.Value + 1
+        txtResult.Text = retmsg.ToString
+    End Sub
+
+    Private Sub bgWorker_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgWorker.RunWorkerCompleted
+        Application.DoEvents()
+        retmsg.Append(GetDateTime() & " สิ้นสุดการเชื่อมต่อ" & vbCrLf)
+        txtResult.Text = retmsg.ToString
+        ProgressBar1.Value = 100
+        btnExcute.Enabled = True
+        btnClear.Enabled = True
     End Sub
 
     Function GetDateTime()

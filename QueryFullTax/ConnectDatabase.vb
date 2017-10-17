@@ -63,6 +63,7 @@ Public Class ConnectDatabase
 
             Dim myCommand As New Npgsql.NpgsqlCommand(sql, myConnectionBase)
             Dim ad As New Npgsql.NpgsqlDataAdapter(myCommand)
+            ad.SelectCommand.CommandTimeout = 300 '300 second or 5 minute
             Dim dt As New DataTable
             ad.Fill(dt)
 

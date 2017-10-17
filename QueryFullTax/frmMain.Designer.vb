@@ -29,6 +29,7 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.bgWorker = New System.ComponentModel.BackgroundWorker()
         Me.SuspendLayout()
         '
         'txtQuery
@@ -124,4 +125,5 @@ Partial Class frmMain
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents bgWorker As System.ComponentModel.BackgroundWorker
 End Class
