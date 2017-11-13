@@ -30,15 +30,19 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.bgWorker = New System.ComponentModel.BackgroundWorker()
+        Me.dpFromDate = New System.Windows.Forms.DateTimePicker()
+        Me.dpToDate = New System.Windows.Forms.DateTimePicker()
+        Me.lblFromDate = New System.Windows.Forms.Label()
+        Me.lblToDate = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'txtQuery
         '
-        Me.txtQuery.Location = New System.Drawing.Point(13, 37)
+        Me.txtQuery.Location = New System.Drawing.Point(13, 80)
         Me.txtQuery.Multiline = True
         Me.txtQuery.Name = "txtQuery"
         Me.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtQuery.Size = New System.Drawing.Size(913, 246)
+        Me.txtQuery.Size = New System.Drawing.Size(913, 203)
         Me.txtQuery.TabIndex = 0
         '
         'txtResult
@@ -84,7 +88,7 @@ Partial Class frmMain
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Label2.Location = New System.Drawing.Point(12, 4)
+        Me.Label2.Location = New System.Drawing.Point(16, 9)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(83, 29)
         Me.Label2.TabIndex = 5
@@ -100,11 +104,47 @@ Partial Class frmMain
         'bgWorker
         '
         '
+        'dpFromDate
+        '
+        Me.dpFromDate.Location = New System.Drawing.Point(231, 48)
+        Me.dpFromDate.Name = "dpFromDate"
+        Me.dpFromDate.Size = New System.Drawing.Size(200, 26)
+        Me.dpFromDate.TabIndex = 10
+        '
+        'dpToDate
+        '
+        Me.dpToDate.Location = New System.Drawing.Point(550, 48)
+        Me.dpToDate.Name = "dpToDate"
+        Me.dpToDate.Size = New System.Drawing.Size(200, 26)
+        Me.dpToDate.TabIndex = 11
+        '
+        'lblFromDate
+        '
+        Me.lblFromDate.AutoSize = True
+        Me.lblFromDate.Location = New System.Drawing.Point(81, 53)
+        Me.lblFromDate.Name = "lblFromDate"
+        Me.lblFromDate.Size = New System.Drawing.Size(144, 20)
+        Me.lblFromDate.TabIndex = 12
+        Me.lblFromDate.Text = "From Receipt Date"
+        '
+        'lblToDate
+        '
+        Me.lblToDate.AutoSize = True
+        Me.lblToDate.Location = New System.Drawing.Point(505, 53)
+        Me.lblToDate.Name = "lblToDate"
+        Me.lblToDate.Size = New System.Drawing.Size(31, 20)
+        Me.lblToDate.TabIndex = 13
+        Me.lblToDate.Text = "To "
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(938, 676)
+        Me.Controls.Add(Me.lblToDate)
+        Me.Controls.Add(Me.lblFromDate)
+        Me.Controls.Add(Me.dpToDate)
+        Me.Controls.Add(Me.dpFromDate)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
@@ -128,4 +168,8 @@ Partial Class frmMain
     Friend WithEvents Label2 As Label
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents bgWorker As System.ComponentModel.BackgroundWorker
+    Friend WithEvents dpFromDate As DateTimePicker
+    Friend WithEvents dpToDate As DateTimePicker
+    Friend WithEvents lblFromDate As Label
+    Friend WithEvents lblToDate As Label
 End Class

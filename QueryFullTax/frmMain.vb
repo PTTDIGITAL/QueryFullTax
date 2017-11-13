@@ -61,6 +61,21 @@ Public Class frmMain
                 End With
 
                 Dim sql As String = txtQuery.Text.Trim
+                Dim SearchWithinThis As String = sql
+                Dim SearchForThis As String = "receipt"
+                Dim SearchForWhere As String = "where"
+                Dim FirstCharacter As Integer = SearchWithinThis.IndexOf(SearchForThis)
+                Dim FirstWhCharacter As Integer = SearchWithinThis.IndexOf(SearchForWhere)
+
+                Dim FromDate As String = dpFromDate.Value.ToString("yyyy-MM-dd", New System.Globalization.CultureInfo("en-US"))
+                Dim ToDate As String = dpToDate.Value.ToString("yyyy-MM-dd", New System.Globalization.CultureInfo("en-US"))
+
+                If FirstCharacter > -1 Then
+                    If FirstWhCharacter < 0 Then
+                        sql += " where 1=1"
+                    End If
+                    sql += " and receipt_date between '" & FromDate & "' and '" & ToDate & "' "
+                End If
 
                 Dim ret As New ProcessReturnInfo
                 ret = clsConnectDatabase.FillData(sql)
